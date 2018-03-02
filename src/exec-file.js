@@ -33,10 +33,7 @@ module.exports = filePath => {
     console.log(chalk.yellow('$ ' + e.command))
   })
 
-  const commands = fs
-    .readFileSync(filePath, { encoding: 'utf-8' })
-    .split('\n')
-    .filter(p => p.trim() !== '')
+  const code = fs.readFileSync(filePath, { encoding: 'utf-8' })
 
-  fetchScript.execute(commands)
+  fetchScript.executeCode(code)
 }
