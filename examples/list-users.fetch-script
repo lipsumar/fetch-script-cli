@@ -1,5 +1,8 @@
-$set apis.sample.baseUrl http://jsonplaceholder.typicode.com
+$options.apis.sample.baseURL = "http://jsonplaceholder.typicode.com"
 
 users = /sample/users
-{users.length}
-l = {users.length}
+all = /sample/users/{users[*].id}
+
+first = all[0]
+> first
+> {users[*].id},{users[*].name}
