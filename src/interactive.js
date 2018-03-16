@@ -24,7 +24,7 @@ function toUser () {
   prompt(
     '$ ',
     function (input) {
-      fetchScript.execute(input).then(toUser)
+      fetchScript.executeCode(input).then(toUser)
     },
     function (err) {
       console.error('unable to read: ' + err)
