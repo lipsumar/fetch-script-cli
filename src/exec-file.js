@@ -1,14 +1,16 @@
 const chalk = require('chalk')
 const fs = require('fs')
 const FetchScript = require('fetch-script')
-const fetchScript = new FetchScript()
 
 module.exports = filePath => {
+  const fetchScript = new FetchScript()
   fetchScript.on('out', out => {
-    console.log('>', out.data)
+    if (typeof out === 'undefined') return
+    process.stdout.write('> ')
+    console.dir(out, { depth: 10, colors: true, maxArrayLength: null })
   })
 
-  fetchScript.on('set-var', e => {
+  /* fetchScript.on('set-var', e => {
     process.stdout.write(`  ${chalk.blue(e.varName)} = `)
     if (e.data instanceof Array) {
       const shown = e.data.slice(0, 2)
@@ -31,7 +33,7 @@ module.exports = filePath => {
 
   fetchScript.on('command', e => {
     console.log(chalk.yellow('$ ' + e.command))
-  })
+  }) */
 
   const code = fs.readFileSync(filePath, { encoding: 'utf-8' })
 

@@ -4,7 +4,11 @@ const FetchScript = require('fetch-script')
 const fetchScript = new FetchScript()
 
 fetchScript.on('out', out => {
-  console.log('>', out.data)
+  console.log('>', out)
+})
+
+fetchScript.on('resource', e => {
+  // console.log('FETCHED ', e.resource)
 })
 
 fetchScript.on('set-var', e => {
@@ -16,7 +20,7 @@ fetchScript.on('set-option', e => {
 })
 
 fetchScript.on('error', e => {
-  console.log(chalk.red('ERROR: ' + e.error))
+  console.log(chalk.red(e.error))
   console.log(e.error)
 })
 
@@ -24,7 +28,17 @@ function toUser () {
   prompt(
     '$ ',
     function (input) {
-      fetchScript.execute(input).then(toUser)
+      try {
+        fetchScript.executeCode(input)
+          .then(toUser)
+          .catch(err => {
+            console.log(chalk.red(err.message))
+            toUser()
+          })
+      } catch (err) {
+        console.log(chalk.red(err.message))
+        toUser()
+      }
     },
     function (err) {
       console.error('unable to read: ' + err)
